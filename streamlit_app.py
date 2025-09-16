@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 # 데이터 불러오기
-df = pd.read_csv("data/heatwave_data.csv")
+df = pd.read_csv("data/data/heatwave_data.csv")
 
 # 제목
 st.title("📊 대한민국 폭염일수 시각화 대시보드")
