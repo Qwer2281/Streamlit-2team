@@ -7,42 +7,44 @@ mean_days = pd.read_csv("data/mean_days.csv")
 longest = pd.read_csv("data/longest_heatwave.csv")
 first_last = pd.read_csv("data/first_last_heatwave.csv")
 
-st.title("📊 폭염 분석 대시보드")
+st.title("📊 Heatwave Analysis Dashboard")
 
-tab1, tab2, tab3 = st.tabs(["연도별 폭염일수", "최장 폭염", "폭염 시작·종료일"])
+tab1, tab2, tab3 = st.tabs(["Annual Heatwave Days", "Longest Heatwave", "Heatwave Start & End"])
 
 # --- Tab 1: 평균 폭염일수 ---
 with tab1:
-    st.subheader("연도별 총 폭염일수")
+    st.subheader("Total Heatwave Days by Year")
     fig, ax = plt.subplots()
-    ax.plot(mean_days["연도"], mean_days["연합계"], marker="o")
-    ax.set_xlabel("연도")
-    ax.set_ylabel("총 폭염일수")
-    ax.set_title("연도별 폭염일수 합계")
+    # 컬럼명을 영어로 매핑
+    ax.plot(mean_days["year"], mean_days["total"], marker="o")
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Total Heatwave Days")
+    ax.set_title("Annual Total Heatwave Days")
     st.pyplot(fig)
 
 # --- Tab 2: 최장 폭염 ---
 with tab2:
-    st.subheader("연도별 최장 폭염 지속일수")
+    st.subheader("Longest Heatwave Duration by Year")
     fig, ax = plt.subplots()
-    ax.bar(longest["연도"], longest["지속일수"], color="orange")
-    ax.set_xlabel("연도")
-    ax.set_ylabel("최장 폭염일수")
-    ax.set_title("최장 폭염 (연속)")
+    ax.bar(longest["year"], longest["duration"], color="orange")
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Longest Heatwave Days")
+    ax.set_title("Longest Consecutive Heatwave")
     st.pyplot(fig)
 
 # --- Tab 3: 시작/종료일 ---
 with tab3:
-    st.subheader("연도별 폭염 시즌 (시작일~종료일)")
-    first_last["가장 빠른 날짜"] = pd.to_datetime(first_last["가장 빠른 날짜"])
-    first_last["가장 늦은 날짜"] = pd.to_datetime(first_last["가장 늦은 날짜"])
+    st.subheader("Heatwave Season by Year (Start ~ End)")
+    # 영어 컬럼으로 변환
+    first_last["first_date"] = pd.to_datetime(first_last["first_date"])
+    first_last["last_date"] = pd.to_datetime(first_last["last_date"])
 
     fig, ax = plt.subplots()
     for i, row in first_last.iterrows():
-        ax.plot([row["가장 빠른 날짜"], row["가장 늦은 날짜"]],
-                [row["연도"], row["연도"]],
+        ax.plot([row["first_date"], row["last_date"]],
+                [row["year"], row["year"]],
                 marker="o")
-    ax.set_xlabel("날짜")
-    ax.set_ylabel("연도")
-    ax.set_title("연도별 폭염 시즌 길이")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Year")
+    ax.set_title("Heatwave Season Length by Year")
     st.pyplot(fig)
